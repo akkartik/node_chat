@@ -108,3 +108,10 @@ a:hover { text-decoration: underline; color: #aaa; }
 #usersLink {
   color: inherit;
 }
+
+#player {
+  float: right;
+  width:100px;
+  height:100px;
+  background:#00f;
+}

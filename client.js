@@ -96,6 +96,10 @@ function addMessage (from, text, time, _class) {
   if (text === null)
     return;
 
+  //alert($('#player').html());
+  if (text === 'stop')
+    $('#player').html('');
+
   if (time == null) {
     // if the time is null or undefined, use the current time.
     time = new Date();
