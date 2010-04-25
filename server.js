@@ -191,8 +191,8 @@ fu.get("/send", function (req, res) {
   res.simpleJSON(200, {});
 });
 
-var songs = [ "airbag.mp3", "enough.m4a", "fidelity.mp3", "furr.mp3",
-"kids.mp3", "light.m4a", "venom.mp3"];
-for (var f in songs) {
-  fu.get("/"+songs[f], fu.staticHandler("music/"+songs[f]));
-}
+fu.get("/play", function(req, res) {
+  sys.puts("playing");
+  var song = qs.parse(url.parse(req.url).query).song;
+  fu.staticHandler("music/"+song)(req, res);
+});

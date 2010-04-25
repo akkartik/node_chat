@@ -148,7 +148,7 @@ function addMessage (from, text, time, _class) {
   }
 
   else if (text.match(/^play /)) {
-    $('#player').html(embed(text.replace(/^play /, '')));
+    $('#player').html(embed(text.replace(/^play /, '/play?song=')));
   }
 
   else if (text === 'songs') {
