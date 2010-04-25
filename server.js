@@ -9,26 +9,6 @@ var fu = require("./fu"),
 var MESSAGE_BACKLOG = 200,
     SESSION_TIMEOUT = 60 * 1000;
 
-var COMMANDS = {
-  play: function(text) {
-          sys.puts('play');
-        }
-}
-
-var handler = {
-  call: function(msg) {
-          command = msg.split(' ')[0];
-          sys.puts("command: "+command);
-          try {
-            COMMANDS[command]();
-            return false;
-          }
-          catch (ex) {
-            return true;
-          }
-        }
-}
-
 var channel = new function () {
   var messages = [],
       callbacks = [];
@@ -40,11 +20,9 @@ var channel = new function () {
             , timestamp: (new Date()).getTime()
             };
 
-    var push = true;
     switch (type) {
       case "msg":
         sys.puts("<" + nick + "> " + text);
-        push = handler.call(text);
         break;
       case "join":
         sys.puts(nick + " join");
@@ -54,9 +32,7 @@ var channel = new function () {
         break;
     }
 
-    if (push) {
-      messages.push( m );
-    }
+    messages.push( m );
 
     while (callbacks.length > 0) {
       callbacks.shift().callback([m]);
