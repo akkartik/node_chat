@@ -88,6 +88,10 @@ function scrollDown () {
   $("#entry").focus();
 }
 
+function embed(f) {
+  return "<embed src=\"" + f + "\" hidden=\"false\" border=\"0\" autostart=\"true\" autoplay=\"true\" loop=\"true\" volume=\"15%\">";
+}
+
 //inserts an event into the stream for display
 //the event may be a msg, join or part type
 //from is the user, text is the body and time is the timestamp, defaulting to now
@@ -95,10 +99,6 @@ function scrollDown () {
 function addMessage (from, text, time, _class) {
   if (text === null)
     return;
-
-  //alert($('#player').html());
-  if (text === 'stop')
-    $('#player').html('');
 
   if (time == null) {
     // if the time is null or undefined, use the current time.
@@ -142,6 +142,24 @@ function addMessage (from, text, time, _class) {
 
   //always view the most recent message when it is added
   scrollDown();
+
+  //alert($('#player').html());
+  if (text === 'stop') {
+    $('#player').html('');
+    text = '';
+  }
+
+  else if (text.match(/^play /)) {
+    $('#player').html(embed(text.replace(/^play /, '')));
+    text = '';
+  }
+
+  else if (text === 'songs') {
+    $("#log").append("airbag.mp3 enough.m4a fidelity.mp3 furr.mp3 kids.mp3 light.m4a venom.mp3");
+    text = '';
+  }
+
+  if (!text) return;
 }
 
 var transmission_errors = 0;

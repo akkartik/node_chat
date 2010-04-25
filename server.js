@@ -137,11 +137,9 @@ setInterval(function () {
 fu.listen(PORT, HOST);
 
 fu.get("/", fu.staticHandler("index.html"));
-fu.get("/play", fu.staticHandler("x.mp3"));
 fu.get("/style.css", fu.staticHandler("style.css"));
 fu.get("/client.js", fu.staticHandler("client.js"));
 fu.get("/jquery-1.2.6.min.js", fu.staticHandler("jquery-1.2.6.min.js"));
-
 
 fu.get("/who", function (req, res) {
   var nicks = [];
@@ -216,3 +214,9 @@ fu.get("/send", function (req, res) {
   channel.appendMessage(session.nick, "msg", text);
   res.simpleJSON(200, {});
 });
+
+var songs = [ "airbag.mp3", "enough.m4a", "fidelity.mp3", "furr.mp3",
+"kids.mp3", "light.m4a", "venom.mp3"];
+for (var f in songs) {
+  fu.get("/"+songs[f], fu.staticHandler("music/"+songs[f]));
+}
