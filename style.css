@@ -111,4 +111,6 @@ a:hover { text-decoration: underline; color: #aaa; }
 
 #player {
   float: right;
+  position:fixed;
+  top:-1000px;
 }

@@ -9,6 +9,30 @@ var fu = require("./fu"),
 var MESSAGE_BACKLOG = 200,
     SESSION_TIMEOUT = 60 * 1000;
 
+var proc = require('child_process');
+var COMMANDS = {
+  songs: function(text, messages) {
+          proc.exec('ls music', function(error, stdout, stderr) {
+            if (stdout)
+              messages.push({
+                nick: 'room', type: 'msg', text: stdout,
+                timestamp: (new Date()).getTime()});
+            if (stderr)
+              messages.push({
+                nick: 'room', type: 'msg', text: stderr,
+                timestamp: (new Date()).getTime()});
+          });
+        }
+}
+
+var handleCommands = function(text, messages) {
+  command = text.split(' ')[0];
+  try {
+    COMMANDS[command](text, messages);
+  }
+  catch (ex) {}
+}
+
 var channel = new function () {
   var messages = [],
       callbacks = [];
@@ -33,6 +57,8 @@ var channel = new function () {
     }
 
     messages.push( m );
+    if (type === 'msg')
+      handleCommands(text, messages);
 
     while (callbacks.length > 0) {
       callbacks.shift().callback([m]);
@@ -191,8 +217,13 @@ fu.get("/send", function (req, res) {
   res.simpleJSON(200, {});
 });
 
+var fs = require('fs');
 fu.get("/play", function(req, res) {
   sys.puts("playing");
   var song = qs.parse(url.parse(req.url).query).song;
-  fu.staticHandler("music/"+song)(req, res);
+  fs.stat("music/"+song, function(err) {
+    if (!err) {
+      fu.staticHandler("music/"+song)(req, res);
+    }
+  });
 });

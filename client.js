@@ -150,10 +150,6 @@ function addMessage (from, text, time, _class) {
   else if (text.match(/^play /)) {
     $('#player').html(embed(text.replace(/^play /, '/play?song=')));
   }
-
-  else if (text === 'songs') {
-    $("#log").append("airbag.mp3 enough.m4a fidelity.mp3 furr.mp3 kids.mp3 light.m4a venom.mp3");
-  }
 }
 
 var transmission_errors = 0;
